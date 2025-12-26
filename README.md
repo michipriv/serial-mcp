@@ -1,5 +1,32 @@
 # Serial-MCP
-MCP server allowing Agents to talk to devices connected to serial port of the computer. Tested only with MAC atm.
+
+## 🔧 Fork mit Windows-Optimierungen und Debug-Verbesserungen
+
+**Dieser Fork von [PaDev1/Serial-MCP](https://github.com/PaDev1/Serial-MCP) enthält folgende Verbesserungen:**
+
+### ✨ Änderungen in diesem Fork
+
+#### 🐛 Debug & Logging Verbesserungen
+- **Enhanced Logging**: Logging-Level von `INFO` auf `DEBUG` erhöht für detailliertere Diagnose
+- **Erweiterte Port-Status-Logs**: Neue Debug-Ausgaben zeigen Port-Status vor/nach Schreiboperationen
+- **Buffer-Status-Monitoring**: Zusätzliche Logs beim Warten auf Antworten zeigen Buffer-Status
+
+#### 🔍 Code-Verbesserungen
+- **Verbesserte Buffer-Prüfung**: `if self.buffer is None` statt `if not self.buffer` für korrekte Null-Prüfung
+- **Detaillierte Byte-Waiting-Logs**: Zeigt exakte Anzahl wartender Bytes an (`Data available: X bytes waiting`)
+- **Besseres Timeout-Handling**: Erweiterte Debug-Ausgaben für Response-Timeout-Vorgänge
+
+#### 📝 Nützlich für
+- Debugging von seriellen Kommunikationsproblemen
+- Entwicklung unter Windows
+- Diagnose von Timeout- und Buffer-Problemen
+- Detaillierte Analyse von Schreib-/Lesevorgängen
+
+---
+
+## 📖 Über Serial-MCP
+
+MCP server allowing Agents to talk to devices connected to serial port of the computer. Tested with MAC and Windows.
 
 A robust serial communication server built with FastMCP framework, providing a reliable interface for serial port communication with features like message buffering, error handling, and connection management.
 
@@ -7,8 +34,8 @@ A robust serial communication server built with FastMCP framework, providing a r
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/PaDev1/Serial-MCP.git
-cd Serial-MCP
+git clone https://github.com/michipriv/serial-mcp.git
+cd serial-mcp
 ```
 
 2. Install dependencies:
@@ -43,6 +70,7 @@ Add the server after installing to your Claude Desktop or similar with the follo
 - **Error Handling**: Comprehensive error detection and reporting
 - **Environment Configuration**: Support for environment variables and runtime configuration
 - **Logging**: Detailed logging with timestamps and error tracking
+- **Enhanced Debugging**: Extended debug output for troubleshooting (this fork)
 
 ## Available Tools
 
@@ -69,7 +97,7 @@ await delay({
 Initialize a serial connection with specified parameters.
 
 **Parameters:**
-- `port` (str): Serial port device path (e.g., '/dev/tty.usbmodem1101')
+- `port` (str): Serial port device path (e.g., '/dev/tty.usbmodem1101' or 'COM3')
 - `baudrate` (int): Communication speed in bauds (default: 9600)
 - `buffer_length` (int): Maximum number of messages to buffer (default: 100)
 
@@ -261,7 +289,7 @@ await help()
 
 The server can be configured using environment variables:
 
-- `SERIAL_PORT`: Serial port device path (default: '/dev/tty.usb*')
+- `SERIAL_PORT`: Serial port device path (default: '/dev/tty.usb*' on Mac, 'COM*' on Windows)
 - `SERIAL_BAUD_RATE`: Communication speed in bauds (default: 9600)
 - `SERIAL_BUFFER_LENGTH`: Maximum number of messages to buffer (default: 100)
 
@@ -278,7 +306,8 @@ python serial_MCP.py
 #### Initialize Serial Connection
 ```python
 await init_serial({
-    "port": "/dev/tty.usbmodem1101",
+    "port": "/dev/tty.usbmodem1101",  # Mac/Linux
+    # or "COM3",  # Windows
     "baudrate": 9600,
     "buffer_length": 100
 })
@@ -349,6 +378,12 @@ Logs are written to `logs/serial_MCP.log` with the following format:
 [timestamp] - [level] - [message]
 ```
 
+**Enhanced in this fork:**
+- DEBUG level logging enabled by default for detailed troubleshooting
+- Additional port status logs during write operations
+- Buffer status monitoring during response waits
+- Detailed byte-waiting information
+
 ## Requirements
 
 - Python 3.7+
@@ -371,6 +406,10 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Acknowledgments
 
+- [PaDev1/Serial-MCP](https://github.com/PaDev1/Serial-MCP) - Original project
 - FastMCP framework for the server infrastructure
 - pyserial for the serial communication capabilities
 
+## Fork Maintainer
+
+This fork is maintained by [@michipriv](https://github.com/michipriv) with focus on Windows compatibility and enhanced debugging capabilities.
