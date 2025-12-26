@@ -27,7 +27,7 @@ os.makedirs(logs_dir, exist_ok=True)
 log_file = os.path.join(logs_dir, 'serial_MCP.log')
 
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.FileHandler(log_file),
@@ -145,7 +145,9 @@ class SerialClient:
         while not self.is_closing:
             try:
                 if self.serial_port and self.serial_port.is_open:
-                    if self.serial_port.in_waiting:
+                    waiting = self.serial_port.in_waiting
+                    if waiting > 0:
+                        logger.debug(f"Data available: {waiting} bytes waiting")
                         try:
                             # Read raw bytes
                             raw_data = self.serial_port.read(self.serial_port.in_waiting)
@@ -337,7 +339,7 @@ class SerialClient:
                 raise ValueError(f"Invalid timeout: {timeout}. Must be a positive number.")
             
             # Check if serial is initialized
-            if not self.buffer:
+            if self.buffer is None:
                 raise SerialConnectionError("Serial not initialized")
             
             # Non-waiting read
@@ -549,8 +551,11 @@ class SerialClient:
                 self.serial_port.write_timeout = timeout
                 
                 # Send the message
+                logger.debug(f"Port status before write: is_open={self.serial_port.is_open}")
                 bytes_written = self.serial_port.write(message.encode('utf-8'))
+                logger.debug(f"Wrote {bytes_written} bytes, port status: is_open={self.serial_port.is_open}")
                 self.serial_port.flush()  # Ensure data is sent
+                logger.debug(f"Port status after flush: is_open={self.serial_port.is_open}")
                 
                 # Restore original timeout
                 self.serial_port.write_timeout = original_timeout
@@ -694,7 +699,9 @@ async def send_message(input: SendMessageInput) -> dict:
             if input.wait_for_response:
                 try:
                     # First wait for the specified delay before checking for response
+                    logger.debug(f"Waiting {input.response_timeout}s for response, buffer status before sleep: {serial_client.buffer is not None}")
                     await asyncio.sleep(input.response_timeout)
+                    logger.debug(f"Sleep completed, buffer status after sleep: {serial_client.buffer is not None}")
                     
                     # Then check for any messages that arrived during the wait
                     response = await serial_client.read(wait=False)
