@@ -24,12 +24,6 @@
 
 ---
 
-## 📖 About Serial-MCP
-
-MCP server allowing Agents to talk to devices connected to serial port of the computer. Tested with MAC and Windows.
-
-A robust serial communication server built with FastMCP framework, providing a reliable interface for serial port communication with features like message buffering, error handling, and connection management.
-
 ## Quick Start
 
 ### Installation
@@ -75,59 +69,20 @@ For complete setup instructions, see **[CLAUDE_CONFIG.md](CLAUDE_CONFIG.md)**
 
 ---
 
-## Features
-
-- **Asynchronous Serial Communication**: Built on asyncio for efficient I/O operations
-- **Message Buffering**: Configurable buffer size with timestamp support
-- **Connection Management**: Automatic port detection and connection handling
-- **Error Handling**: Comprehensive error detection and reporting
-- **Runtime Configuration**: Configure ports and baud rates dynamically without config file changes
-- **Logging**: Detailed logging with timestamps and error tracking
-- **Enhanced Debugging**: Extended debug output for troubleshooting (this fork)
-
----
-
 ## Usage
-
-### Runtime Configuration (Recommended)
 
 Serial-MCP is designed to be configured at runtime through natural language conversation with Claude:
 
 ```
 You: "List available serial ports"
-Claude: [Uses serial_MCP:list_serial_ports]
-        "Available ports: COM5 (USB-SERIAL CH340), COM3 (Arduino)..."
+Claude: "Available ports: COM5 (USB-SERIAL CH340), COM3 (Arduino)..."
 
 You: "Connect to COM5 at 115200 baud"
-Claude: [Uses serial_MCP:init_serial with port=COM5, baudrate=115200]
-        "Connected successfully to COM5 at 115200 baud"
+Claude: "Connected successfully to COM5 at 115200 baud"
 
 You: "Send 'uname -a' and wait for response"
-Claude: [Uses serial_MCP:send_message]
-        "Sent command, received: Linux rockpi-e..."
+Claude: "Sent command, received: Linux rockpi-e..."
 ```
-
-### Available Tools
-
-- **list_serial_ports** - Discover available serial ports
-- **init_serial** - Initialize connection with port, baud rate, buffer settings
-- **send_message** - Send data and optionally wait for response
-- **read_message** - Read from receive buffer
-- **get_serial_status** - Check connection status
-- **configure_serial** - Change settings without reconnecting
-- **close_serial** - Close connection
-- **delay** - Wait for specified time
-- **help** - Get detailed tool documentation
-
-For detailed tool descriptions and examples, see the original documentation below.
-
----
-
-## Documentation
-
-- **[CLAUDE_CONFIG.md](CLAUDE_CONFIG.md)** - Complete Claude Desktop configuration guide
-- **[TESTS.md](TESTS.md)** - Comprehensive stability test report
-- **[README_ORIGINAL.md](README_ORIGINAL.md)** - Original project documentation with full API reference
 
 ---
 
@@ -147,6 +102,14 @@ This fork has been extensively tested and validated:
 - Port: COM5
 - Baud Rate: 115200
 - Platform: Windows
+
+---
+
+## Documentation
+
+- **[CLAUDE_CONFIG.md](CLAUDE_CONFIG.md)** - Complete Claude Desktop configuration guide
+- **[TESTS.md](TESTS.md)** - Comprehensive stability test report
+- **[DOCU.md](DOCU.md)** - Complete API reference and detailed documentation
 
 ---
 
